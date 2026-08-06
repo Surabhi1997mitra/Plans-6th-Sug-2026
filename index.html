@@ -1,1 +1,743 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Nutrition Plan - YourFitMitra</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes glow {
+      0%, 100% {
+        box-shadow: 0 8px 24px rgba(74, 142, 102, 0.15);
+      }
+      50% {
+        box-shadow: 0 12px 32px rgba(74, 142, 102, 0.25);
+      }
+    }
+    
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+    
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #faf8f3 0%, #f0f5eb 40%, #e8f3f0 100%);
+      color: #2d2d2d;
+      line-height: 1.65;
+      min-height: 100vh;
+      padding: 3rem 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(139, 195, 148, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -20%;
+      left: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(226, 171, 110, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .container {
+      max-width: 750px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 3.5rem 3rem;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 2px solid rgba(139, 195, 148, 0.2);
+      animation: slideInLeft 0.8s ease-out;
+    }
+    
+    .brand-label {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #4a8e66;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      padding: 6px 16px;
+      background: linear-gradient(135deg, rgba(139, 195, 148, 0.1) 0%, rgba(226, 171, 110, 0.05) 100%);
+      border-radius: 50px;
+    }
+    
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 600;
+      color: #e2ab6e;
+      margin-bottom: 0.75rem;
+      letter-spacing: -1px;
+      line-height: 1.2;
+    }
+    
+    .header p {
+      font-size: 15px;
+      color: #6b8b7a;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+    
+    .goal-section {
+      margin-bottom: 3.5rem;
+      animation: fadeInUp 1s ease-out 0.1s backwards;
+    }
+    
+    .goal-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 500;
+      color: #2d5a42;
+      margin-bottom: 2rem;
+      letter-spacing: -0.5px;
+    }
+    
+    .goal-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      list-style: none;
+    }
+    
+    .goal-list li {
+      font-size: 15px;
+      color: #3d3d3d;
+      padding: 0.65rem 1rem 0.65rem 2.25rem;
+      position: relative;
+      line-height: 1.6;
+      background: linear-gradient(90deg, rgba(139, 195, 148, 0.05) 0%, transparent 100%);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .goal-list li:hover {
+      background: linear-gradient(90deg, rgba(139, 195, 148, 0.12) 0%, rgba(226, 171, 110, 0.05) 100%);
+      transform: translateX(8px);
+      padding-left: 2.75rem;
+    }
+    
+    .goal-list li:before {
+      content: "→";
+      position: absolute;
+      left: 1rem;
+      color: #4a8e66;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .goal-list li:hover:before {
+      transform: translateX(4px);
+      color: #e2ab6e;
+    }
+    
+    .meals-section {
+      margin-bottom: 3.5rem;
+      animation: fadeInUp 1s ease-out 0.2s backwards;
+    }
+    
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 500;
+      color: #2d5a42;
+      margin-bottom: 2rem;
+      letter-spacing: -0.5px;
+    }
+    
+    .meal {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(139, 195, 148, 0.06) 0%, rgba(226, 171, 110, 0.04) 100%);
+      border: 1px solid rgba(139, 195, 148, 0.15);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeInUp 1s ease-out backwards;
+    }
+    
+    .meal:nth-child(1) { animation-delay: 0.3s; }
+    .meal:nth-child(2) { animation-delay: 0.35s; }
+    .meal:nth-child(3) { animation-delay: 0.4s; }
+    .meal:nth-child(4) { animation-delay: 0.45s; }
+    .meal:nth-child(5) { animation-delay: 0.5s; }
+    .meal:nth-child(6) { animation-delay: 0.55s; }
+    
+    .meal:hover {
+      background: linear-gradient(135deg, rgba(139, 195, 148, 0.12) 0%, rgba(226, 171, 110, 0.08) 100%);
+      border-color: rgba(139, 195, 148, 0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(74, 142, 102, 0.12);
+    }
+    
+    .meal-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    
+    .meal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: #2d5a42;
+      letter-spacing: -0.5px;
+    }
+    
+    .meal-time {
+      font-size: 13px;
+      color: #e2ab6e;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      background: rgba(226, 171, 110, 0.12);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    
+    .meal-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-bottom: 1.25rem;
+    }
+    
+    .meal-content.full {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    
+    .ingredient-list {
+      list-style: none;
+      font-size: 14px;
+      color: #3d3d3d;
+    }
+    
+    .ingredient-list li {
+      padding: 0.6rem 0;
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.5;
+      transition: all 0.2s ease;
+    }
+    
+    .ingredient-list li:hover {
+      color: #4a8e66;
+      padding-left: 28px;
+    }
+    
+    .ingredient-list li:before {
+      content: "•";
+      position: absolute;
+      left: 8px;
+      color: #4a8e66;
+      font-weight: 700;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+    
+    .ingredient-list li:hover:before {
+      color: #e2ab6e;
+    }
+    
+    .option-group h4 {
+      font-size: 12px;
+      color: #e2ab6e;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    .macro-info {
+      font-size: 13px;
+      color: #5a5a5a;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(139, 195, 148, 0.15);
+      margin-top: 1rem;
+    }
+    
+    .macro-label {
+      color: #8a8a8a;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    .macro-value {
+      color: #4a8e66;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    
+    .targets-section {
+      background: linear-gradient(135deg, rgba(139, 195, 148, 0.1) 0%, rgba(226, 171, 110, 0.08) 100%);
+      padding: 2.5rem 3rem;
+      margin: 3.5rem -3rem;
+      border-top: 2px solid rgba(139, 195, 148, 0.2);
+      border-bottom: 2px solid rgba(139, 195, 148, 0.2);
+      animation: fadeInUp 1s ease-out 0.6s backwards;
+    }
+    
+    .targets-section .section-title {
+      margin-bottom: 2rem;
+    }
+    
+    .targets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    
+    .target-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      border: 1px solid rgba(139, 195, 148, 0.15);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(8px);
+    }
+    
+    .target-item:hover {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(139, 195, 148, 0.3);
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(74, 142, 102, 0.15);
+    }
+    
+    .target-label {
+      font-size: 11px;
+      color: #8a8a8a;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    
+    .target-value {
+      font-size: 28px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #4a8e66 0%, #e2ab6e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    
+    .checklist-section {
+      margin-top: 3.5rem;
+      animation: fadeInUp 1s ease-out 0.7s backwards;
+    }
+    
+    .checklist-section .section-title {
+      margin-bottom: 2rem;
+    }
+    
+    .checklist-items {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      font-size: 15px;
+      color: #3d3d3d;
+      cursor: pointer;
+      line-height: 1.5;
+      padding: 0.75rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .checklist-item:hover {
+      background: rgba(139, 195, 148, 0.08);
+    }
+    
+    .checklist-item input {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      margin-top: 3px;
+      cursor: pointer;
+      accent-color: #4a8e66;
+      transition: all 0.2s ease;
+    }
+    
+    .checklist-item input:hover {
+      transform: scale(1.1);
+    }
+    
+    .checklist-item input:checked {
+      background-color: #4a8e66;
+      border-color: #4a8e66;
+    }
+    
+    .checklist-item input:checked + span {
+      color: #a0a0a0;
+      text-decoration: line-through;
+    }
+    
+    .quote-section {
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 2px solid rgba(139, 195, 148, 0.2);
+      text-align: center;
+      animation: fadeInUp 1s ease-out 0.8s backwards;
+    }
+    
+    .quote {
+      font-family: 'Playfair Display', serif;
+      color: #2d5a42;
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.8;
+      font-style: italic;
+      letter-spacing: -0.3px;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(139, 195, 148, 0.06) 0%, rgba(226, 171, 110, 0.04) 100%);
+      border-radius: 12px;
+      border-left: 4px solid #4a8e66;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(139, 195, 148, 0.15);
+      font-size: 12px;
+      color: #8a8a8a;
+      letter-spacing: 0.5px;
+      animation: fadeInUp 1s ease-out 0.9s backwards;
+    }
+    
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .container {
+        max-width: 100%;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+        background: white;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      body {
+        padding: 1.5rem 1rem;
+      }
+      
+      .container {
+        padding: 2rem 1.5rem;
+      }
+      
+      .header h1 {
+        font-size: 36px;
+      }
+      
+      .section-title {
+        font-size: 22px;
+      }
+      
+      .meal-title {
+        font-size: 18px;
+      }
+      
+      .meal {
+        padding: 1.5rem;
+      }
+      
+      .meal-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .targets-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .targets-section {
+        margin: 2.5rem -1.5rem;
+        padding: 2rem 1.5rem;
+      }
+      
+      .quote {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand-label">YourFitMitra</div>
+      <h1>Nutrition Plan</h1>
+      <p>6 Days/Week • Fat Loss + Strength</p>
+    </div>
+    
+    <section class="goal-section">
+      <h2>Goal</h2>
+      <ul class="goal-list">
+        <li>🔥 Reduce body fat while maintaining muscle</li>
+        <li>🔥 Build visible abs</li>
+        <li>🔥 Keep strength and performance high</li>
+        <li>🔥 Sustainable nutrition for my lifestyle</li>
+      </ul>
+    </section>
+    
+    <section class="meals-section">
+      <h2 class="section-title">Daily Meals</h2>
+      
+      <div class="meal">
+        <div class="meal-header">
+          <div class="meal-title">Breakfast</div>
+          <div class="meal-time">7–8 AM</div>
+        </div>
+        <div class="meal-content full">
+          <ul class="ingredient-list">
+            <li>30g Oats</li>
+            <li>100ml Milk</li>
+            <li>1 Banana</li>
+            <li>Blueberries</li>
+            <li>Pumpkin seeds</li>
+            <li>½ scoop Nakpro Protein</li>
+          </ul>
+        </div>
+        <div class="macro-info">
+          <span class="macro-label">Nutrition</span>
+          <div class="macro-value">400 kcal • 23g Protein</div>
+        </div>
+      </div>
+      
+      <div class="meal">
+        <div class="meal-header">
+          <div class="meal-title">Lunch</div>
+          <div class="meal-time">12–1 PM</div>
+        </div>
+        <div class="meal-content">
+          <div class="option-group">
+            <h4>Option 1</h4>
+            <ul class="ingredient-list">
+              <li>2 Multigrain Rotis</li>
+              <li>Dal</li>
+              <li>Paneer</li>
+              <li>Sabzi</li>
+            </ul>
+          </div>
+          <div class="option-group">
+            <h4>Option 2</h4>
+            <ul class="ingredient-list">
+              <li>Rice</li>
+              <li>Dal</li>
+              <li>Soya Chunks</li>
+              <li>Sabzi</li>
+            </ul>
+          </div>
+        </div>
+        <div class="macro-info">
+          <span class="macro-label">Nutrition</span>
+          <div class="macro-value">550–600 kcal • 28–35g Protein</div>
+        </div>
+      </div>
+      
+      <div class="meal">
+        <div class="meal-header">
+          <div class="meal-title">Snack</div>
+          <div class="meal-time">3–4 PM</div>
+        </div>
+        <div class="meal-content full">
+          <ul class="ingredient-list">
+            <li>1 Mango</li>
+            <li>50g Curd</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="meal">
+        <div class="meal-header">
+          <div class="meal-title">Protein Shake</div>
+          <div class="meal-time">5–6 PM</div>
+        </div>
+        <div class="meal-content full">
+          <ul class="ingredient-list">
+            <li>1 Scoop BeastLife Whey Protein</li>
+          </ul>
+        </div>
+        <div class="macro-info">
+          <span class="macro-label">Nutrition</span>
+          <div class="macro-value">24–26g Protein</div>
+        </div>
+      </div>
+      
+      <div class="meal">
+        <div class="meal-header">
+          <div class="meal-title">Dinner</div>
+          <div class="meal-time">8–9 PM</div>
+        </div>
+        <div class="meal-content full">
+          <ul class="ingredient-list">
+            <li>200g Chicken</li>
+            <li>Mixed Vegetables</li>
+            <li>Light Makhana & Paneer Gravy</li>
+            <li>Small Piece of Potato</li>
+            <li>Honey + Sriracha (to taste)</li>
+          </ul>
+        </div>
+        <div class="macro-info">
+          <span class="macro-label">Nutrition</span>
+          <div class="macro-value">550 kcal • 55–60g Protein</div>
+        </div>
+      </div>
+      
+      <div class="meal">
+        <div class="meal-header">
+          <div class="meal-title">Beverages</div>
+        </div>
+        <div class="meal-content full">
+          <ul class="ingredient-list">
+            <li>Black Coffee (No Sugar)</li>
+            <li>Tea with Milk (No Sugar)</li>
+            <li>2–3 Cream Crackers (if needed)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    
+    <section class="targets-section">
+      <h2 class="section-title">Daily Targets</h2>
+      <div class="targets-grid">
+        <div class="target-item">
+          <div class="target-label">Calories</div>
+          <div class="target-value">1,900–2,000</div>
+        </div>
+        <div class="target-item">
+          <div class="target-label">Protein</div>
+          <div class="target-value">125–135g</div>
+        </div>
+        <div class="target-item">
+          <div class="target-label">Carbs</div>
+          <div class="target-value">180–200g</div>
+        </div>
+        <div class="target-item">
+          <div class="target-label">Fat</div>
+          <div class="target-value">45–55g</div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="checklist-section">
+      <h2 class="section-title">Daily Checklist</h2>
+      <div class="checklist-items">
+        <label class="checklist-item">
+          <input type="checkbox">
+          <span>Hit 125–135g protein</span>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox">
+          <span>Drink 2.5–3L water</span>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox">
+          <span>Eat fruits & vegetables</span>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox">
+          <span>Follow planned meals</span>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox">
+          <span>Limit cheat meal to Sunday lunch</span>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox">
+          <span>Sunday dinner: high-protein for Monday</span>
+        </label>
+      </div>
+    </section>
+    
+    <div class="quote-section">
+      <p class="quote">Consistency beats perfection. My goal is to become leaner, stronger, healthier, and build visible abs while maintaining performance.</p>
+    </div>
+    
+    <div class="footer">
+      Personalized Nutrition Plan • YourFitMitra
+    </div>
+  </div>
+</body>
+</html>
